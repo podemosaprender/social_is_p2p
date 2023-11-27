@@ -50,4 +50,11 @@ This data is restricted to whe domain where it was downloaded BUT we can provide
 NOTICE curators may share SeedIndex files e.g. to get people started on some community, language, subject, etc. eg PingPong videos, players, chats, etc.
 
 
+## SeedIndex
+
+See `data_ex`
+* Mario.seedIndex.20231003.json
+* Mauricio.seedIndex.20231004.json
+
+NOTICE: there are common keys on both SeedIndex.es, TheViewer should perform TheMerge to show a third user the union of all keys leaving only the latest of the versions correctly signed by the PublicKeys.
 
