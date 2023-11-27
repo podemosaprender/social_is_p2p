@@ -1,0 +1,16 @@
+{
+	myKey: "0x8888888",
+	sources: {
+		"0x11111111": {"blockedBy": ["0x8888888", "0x77777777"]},
+		"0x22222222": {"friendOf": ["0x8888888", "0x77777777"]},
+		"0x44444444": {"friendOf": ["0x8888888"]}
+	}
+	content: {
+		"0x9999999": {
+			"Javascript Tutorial": {updated: "2023-01-10", type: "mp3", link: "magnet:21000000000"}
+		},
+		"0x33333333": {
+			"Python Tricks": {updated: "2023-01-15", type: "markdown", link: "http://juan.com/pytricks"},
+		}
+	}
+}
