@@ -58,3 +58,21 @@ See `data_ex`
 
 NOTICE: there are common keys on both SeedIndex.es, TheViewer should perform TheMerge to show a third user the union of all keys leaving only the latest of the versions correctly signed by the PublicKeys.
 
+## Chats
+
+There is a reference in the SeedIndex for the chats I'am following.
+
+Each chat has a link (magnet) to a file with ALL the conversation, ALL the messages, etc.
+
+* data_ex/Mario.chat.1882-1212-4444.json
+* data_ex/Mario.chat.9892-1212-3333.json
+
+## TheDiscovery
+
+Including data from other sources in MY seed index helps my followers discover new friends, content, etc.
+
+Crawlers, indexers, etc can be built on this data too.
+
+The only LIMIT is the cost on TheMerge to consolidate data imposed on TheViewer 
+
+SeedIndex.es don't need to include obsolete data, we can simple add a section for archived content eg. links to SeedIndex.es from previous days, weeks, etc.

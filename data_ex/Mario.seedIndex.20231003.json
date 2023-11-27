@@ -12,5 +12,13 @@
 		"0x33333333": {
 			"Python Tricks": {updated: "2022-12-30", type: "markdown", link: "http://juan.com/pytricks"},
 		}
+	},
+	chats: {
+		"1882-1212-4444": {updated: "2023-1003:1250", type: "chat", link: "magnet:1872817872"}
+		"9892-1212-3333": {updated: "2023-1003:1240", type: "chat", link: "magnet:88888999911"}
+	},
+	archived: {
+		"2023-09-01": "magnet:88228822882",
+		"2023-01-03": "magnet:11223344556"
 	}
 }

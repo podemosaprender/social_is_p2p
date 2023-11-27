@@ -1,0 +1,10 @@
+[
+		{source: "0x9999999", msg: "Que les parece un asado", date: "20231003:1000"},
+		{source: "0x3333333", msg: "Uh! No puedo!", date: "20231003:1010"},
+		{source: "0x4444444", msg: "Tengo que estudiar", date: "20231003:1012"},
+		[
+			{source: "0x5555555", msg: "Quien lleva que?", date: "20231003:1022"},
+			{source: "0x6666666", msg: "Me ocupo de la ensalada", date: "20231003:1032"},
+			{source: "0x8888888", msg: "Llevo unos vinos", date: "20231003:1042"},
+		] 
+]
