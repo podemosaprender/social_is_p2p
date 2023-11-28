@@ -9,7 +9,7 @@ A protocol and a client to provide a social network experience with files distri
 
 Focus on the **protocol**, make it easy to implement with ANY transport (not only torrent)
 
-First challenge: "a twitter-like experience"
+First challenge: "a twitter-like experience", replace a PodemosAprender discord channel.
 
 ## Viewing content
 
@@ -67,6 +67,10 @@ Each chat has a link (magnet) to a file with ALL the conversation, ALL the messa
 * data_ex/Mario.chat.1882-1212-4444.json
 * data_ex/Mario.chat.9892-1212-3333.json
 
+NOTICE we want to enable chats for videos, etc. like comments on youtube
+
+NOTICE we may want to include initiator and date in the ChatId to skip most without downloading the actual conversation.
+
 ## TheDiscovery
 
 Including data from other sources in MY seed index helps my followers discover new friends, content, etc.
@@ -76,3 +80,9 @@ Crawlers, indexers, etc can be built on this data too.
 The only LIMIT is the cost on TheMerge to consolidate data imposed on TheViewer 
 
 SeedIndex.es don't need to include obsolete data, we can simple add a section for archived content eg. links to SeedIndex.es from previous days, weeks, etc.
+
+## TheReplication
+
+TheViewer shows an option to "pin"=automatically download and share the content from people I follow.
+
+We may have too levels: 1. download and share everything, 2. only the SeedIndex.
