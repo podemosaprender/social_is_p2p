@@ -1,23 +1,25 @@
 {
-	myKey: "0x9999999",
-	sources: {
+	"myKey": "0x9999999",
+	"sources": {
 		"0x11111111": {"blockedBy": ["0x9999999", "0x77777777"]},
 		"0x22222222": {"friendOf": ["0x9999999", "0x77777777"]},
 		"0x33333333": {"friendOf": ["0x9999999"]}
-	}
-	content: {
+	},
+	"content": {
 		"0x9999999": {
-			"Javascript Tutorial": {updated: "2023-01-19", type: "mp3", link: "magnet:21829819289"}
+			"Javascript Tutorial": {"updated": "2023-01-19", "type": "mp3", "comments": "9892-1212-2222" , "link": "magnet:21829819289"}
 		},
 		"0x33333333": {
-			"Python Tricks": {updated: "2022-12-30", type: "markdown", link: "http://juan.com/pytricks"},
+			"Python Tricks": {"updated": "2022-12-30", "type": "markdown", "link": "http://juan.com/pytricks"}
 		}
 	},
-	chats: {
-		"1882-1212-4444": {updated: "2023-1003:1250", type: "chat", link: "magnet:1872817872"}
-		"9892-1212-3333": {updated: "2023-1003:1240", type: "chat", link: "magnet:88888999911"}
-	},
-	archived: {
+    "chats": {
+        "1882-1212-4444": {"updated": "2023-1003:1250", "type": "chat", "link": "magnet:1872817872"},
+		"9892-1212-3333": {"updated": "2023-1003:1240", "type": "chat", "link": "magnet:88888999911"},
+        "9892-1212-2222": {"updated": "2023-1003:1230", "type": "comment", "link": "magnet:88888555511"}
+    }
+	,
+	"archived": {
 		"2023-09-01": "magnet:88228822882",
 		"2023-01-03": "magnet:11223344556"
 	}

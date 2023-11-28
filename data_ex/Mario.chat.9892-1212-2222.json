@@ -1,0 +1,7 @@
+{
+    "9892-1212-3333":[
+		{"source": "0x11111", "msg": "mal ahi", "date": "20231003:1000"},
+		{"source": "0x22222", "msg": "muy bueno para reflexionar", "date": "20231003:1010"},
+		{"source": "0x33333", "msg": "Tengo que estudiar", "date": "20231003:1012", "answers": "9999-1212-3333"}
+    ]
+}
