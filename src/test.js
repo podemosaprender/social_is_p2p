@@ -1,10 +1,11 @@
+//INFO: write tests here
 //SEE: https://mochajs.org/#getting-started
 
 describe('SeedIndex', function () {
-  describe('seedIndex_add', function () {
-		it('should return TODO:EMU', function () {
-			let r= seedIndex_add("TODO:EMU:URL");
-      expect(r).to.equal(-1);
+  describe('seedIndex store', function () {
+		it('should return valid format if no data', function () {
+			let r= store_seedIndex_get();
+			expect(r).to.equal({ MyKey: "0x333333", content: {} }); //TODO:
     });
   });
 });
