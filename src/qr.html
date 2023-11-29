@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>QRCode generator</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js" integrity="sha512-ZDSPMa/JM1D+7kdg2x3BsruQ6T/JpJo3jWDWkCZsP+5yVyp1KfESqLI+7RqB5k24F7p2cV7i2YHh/890y6P6Sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	</head>
+	<body>
+		<h1>QR code for the data after the # in the url</h1>
+		<input id="text" type="text" style="width:90%" /><br />
+		<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
+
+		<script type="text/javascript">
+			var elText = document.getElementById("text");
+
+			function makeCode () {		
+				if (!elText.value) {
+					alert("Input a text");
+					elText.focus();
+					return;
+				}
+
+				var typeNumber = 0;
+				var errorCorrectionLevel = 'L';
+				var qr = qrcode(typeNumber, errorCorrectionLevel);
+				qr.addData(elText.value);
+				qr.make();
+				document.getElementById('qrcode').innerHTML = qr.createImgTag();
+			}
+
+			elText.value= decodeURIComponent(window.location.hash.slice(1));
+
+			makeCode();
+
+		</script>
+	</body>
