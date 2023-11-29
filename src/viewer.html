@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js"></script>
+		<!--A: Include the latest version of WebTorrent -->
+		<script src="./social_is_p2p.js"></script>
+	</head>
+	<body>
+		<h1>social_is_p2p Viewer</h1>
+
+		<div> 
+			<button id="seedBtn">Seed</button> 
+			<a id="seedLink" href="#" target="_blank"></a> 
+			<a id="seedLinkQR" href="#" target="_blank"></a> 
+		</div>
+
+		<form>
+			<label ror="torrentId">Download from a magnet link: </label>
+			<input name="torrentId", placeholder="magnet:">
+			<button type="submit">Download</button>
+		</form>
+
+		<h2>Log</h2>
+		<div class="log"></div>
+
+
+		<script>
+			let SeedLink_el= document.querySelector("#seedLink")
+			let SeedLinkQR_el= document.querySelector("#seedLinkQR")
+
+			function log (str) {
+				const p = document.createElement('p')
+				p.innerHTML = str
+				document.querySelector('.log').appendChild(p)
+			}
+
+			let ViewerUrl= location.href.replace(/[?#].*/,'');
+			let QRGenUrl= ViewerUrl.replace(/[^\/]+\/?$/,'')+'/qr.html';
+
+			//S: SEED
+			function onSeed() {
+				log("seed0")
+				content= [ new Blob([ 'hola '+new Date() ], {type: 'text/plain'}) ]
+				TorrentClient.seed(content, null, (torrent) => {
+					xt1= torrent;
+					log("SEEDING " + torrent.magnetURI)
+					let urlToView= ViewerUrl+'#'+encodeURIComponent(torrent.magnetURI);
+					SeedLink_el.href= urlToView;
+					SeedLink_el.innerText= "Viewer Link";
+					SeedLinkQR_el.href= QRGenUrl+'#'+encodeURIComponent(urlToView);
+					SeedLinkQR_el.innerText= "QR Link";
+				})
+			}
+			document.querySelector("#seedBtn").onclick= onSeed 
+
+			//S: GET
+			document.querySelector('form').addEventListener('submit', function (e) {
+				e.preventDefault() // Prevent page refresh
+
+				const torrentId = document.querySelector('form input[name=torrentId]').value
+				log('Adding ' + torrentId)
+				TorrentClient.add(torrentId, onTorrent)
+			})
+
+			function onTorrent (torrent) {
+				log('Got torrent metadata!')
+				xt0= torrent;
+				log(
+					'Torrent info hash: ' + torrent.infoHash + ' ' +
+					'<a href="' + torrent.magnetURI + '" target="_blank">[Magnet URI]</a> ' +
+					'<a href="' + torrent.torrentFileBlobURL + '" target="_blank" download="' + torrent.name + '.torrent">[Download .torrent]</a>'
+				)
+
+				// Print out progress every 5 seconds
+				const interval = setInterval(function () {
+					log('Progress: ' + (torrent.progress * 100).toFixed(1) + '%')
+				}, 5000)
+
+				torrent.on('done', function () {
+					log('Progress: 100%')
+					clearInterval(interval)
+				})
+
+				// Render all files into to the page
+				torrent.files.forEach(function (file) {
+					xf= file;
+					if (xf.name.startsWith("Unnamed Torrent")) { //XXX:como saber el tipo?
+						xf.getBuffer((err, buf) => {
+							console.log(new TextDecoder().decode(buf))
+						});
+						return;
+					}
+
+					file.appendTo('.log')
+					log('(Blob URLs only work if the file is loaded from a server. "http//localhost" works. "file://" does not.)')
+					file.getBlobURL(function (err, url) {
+						if (err) return log(err.message)
+						log('File done.')
+						log('<a href="' + url + '">Download full file: ' + file.name + '</a>')
+					})
+				})
+			}
+
+		</script>
+	</body>
+</html>
