@@ -33,6 +33,7 @@ function torrent_start() {
 	TorrentClient= new WebTorrent()
 	TorrentClient.on('error', function (err) {
 		console.error('ERROR: torrent' + err.message) //TODO:custom handler
+		window.log && log('ERROR: torrent' + err.message) //TODO:custom handler
 	})
 }
 torrent_start();
