@@ -1,16 +1,66 @@
 //INFO: user -> SeedIndex magnet
 
+onRoute= {}
+
+//S: user -> SeedIndex magnet {
+//U: curl -X PUT http://localhost:3000/seedindex/mau -H 'content-type: application/json' --data '{"magnet": "magnet:2819829"}'
+//U: curlhttp://localhost:3000/seedindex/all
+
+const User2SeedIndex_MAX= 100;
+const MAGNET_LENGTH_MAX=2000;
+
+var User2SeedIndex= {}
+onRoute['/seedindex/all']= {
+	method: 'get',
+	cb: (req, res, next) => { res.json( User2SeedIndex ) }
+}
+
+onRoute['/seedindex/:user']= {
+	method: 'get',
+	cb: (req, res, next) => { res.json( User2SeedIndex[ req.params.user ] || 'NA' ) }
+}
+
+onRoute['/seedindex/:user']= {
+	method: 'put',
+	cb: (req, res, next) => { 
+		let wasRegistered= User2SeedIndex[ req.params.user ];
+		let canBeAdded= () => (Object.keys( User2SeedIndex ).length < User2SeedIndex_MAX);
+		let sts= "ERROR"; //DFLT
+		if (wasRegistered || canBeAdded() ) {
+			User2SeedIndex[ req.params.user ]= (req.body.magnet+'').slice(0,MAGNET_LENGTH_MAX);
+			sts="OK";
+		} 
+		res.json({status: sts});
+	}
+}
+
+//S: user -> SeedIndex magnet }
+
+
+
+//S: proxy http -> ws XXX:agregar WebRtp {
 var ID=0;
+var BROWSER_ID=0;
 var BROWSERS= {}
 
 var onWsCx= (socket => {
-	console.log("ws cx");
-	let me= {s: socket, w: {} };
-	BROWSERS['XXX']= me;
+	let myId= BROWSER_ID++;
+	console.log("ws cx", myId, socket);
+	let me= {id: myId, s: socket, w: {} };
+	BROWSERS[myId]= me;
+
+	function onCxEnd(err) {
+		console.log("WS CLOSE",myId, err);
+		delete BROWSERS[myId];
+	}
+
+	socket.on('error', onCxEnd);
+	socket.on('close', onCxEnd);
+
   socket.on('message', message => {
 		const m= JSON.parse(message.toString('utf-8'));
-		console.log(m);
-		if (m.t= 'res') {
+		console.log("WS MSG", m);
+		if (m.t= 'res') { //A: an http req was waiting for res
 			let w= me.w[m.id];
 			if (w) { 
 				try {
@@ -22,23 +72,26 @@ var onWsCx= (socket => {
 			}
 		}
 	});
+
 });
 
-onRoute= {}
-onRoute['/p']= {
+onRoute['/p/:peerId']= { //SEE: http://expressjs.com/en/guide/routing.html#route-parameters
 	method: 'all', 
 	cb: (req, res, next) => {
-		const b= BROWSERS['XXX'];
-		if (b) {
+		const peerId= req.params.peerId;
+		const b= BROWSERS[peerId];
+		if (b) { //A: there is a peer with this ID that may answer
 			const id= ID++;
 			b.s.send(JSON.stringify({t: 'req', id: id, data: {query: req.query, body: req.body, method: req.method, path: req.path}}));
 			b.w[id]= res;
 			console.log("W",id);
+		} else {
+			res.status(501).send(`No peer with id ${peerId}`).end();
 		}
-		res.json([10,20]);
 	},
 };
 
+//S: proxy http -> ws XXX:agregar WebRtp }
 
 // dwimer_start
 // (src_snippet e "$DWIMER/node/express/prelude.js" <<EOC
@@ -56,6 +109,7 @@ const server = http.createServer(app);
 server.on('error', onError);
 server.on('listening', onListening);
 
+//SEE: https://github.com/websockets/ws/blob/master/doc/ws.md
 const server_ws = new ws.Server({ noServer: true });
 server.on('upgrade', (request, socket, head) => {
   server_ws.handleUpgrade(request, socket, head, socket => {
@@ -118,7 +172,15 @@ const setCacheControl = function (seconds) {
 }
 app.use(setCacheControl(1))
 
-app.use(express.json()) //A: parsing application/json
+app.use(express.json({ //A: parsing application/json
+  type: 'application/json',
+  strict: true,
+  inflate: true,
+	limit: '100kb', //XXX:CFG
+  reviver: null, 
+  verify: undefined
+}))
+
 app.use(express.urlencoded({ extended: true })) //A: parsing application/x-www-form-urlencoded
 //XXX: app.use(cookieParser());
 app.all(/.*/, function(req, res, next) { //A: redirigir a www
@@ -136,6 +198,9 @@ Allow: /
 Sitemap: https://"+process.env.HOST+"/sitemap.xml
 `);
 });
+
+//SEE: https://expressjs.com/en/starter/static-files.html
+app.use(express.static(__dirname+'/static'))
 
 //A: basic middleware
 

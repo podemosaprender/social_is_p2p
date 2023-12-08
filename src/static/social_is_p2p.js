@@ -50,4 +50,20 @@ async function publish_text(title, text) {
 	return await torrent_seed_text(title, text); 
 }
 
+//S: ws {
+saludo="Hola";
+
+host= location.host;
+ws= new WebSocket('ws://'+host+'/')
+ws.onopen = (ev) => {
+	ws.send(JSON.stringify({t:"cx ok"}));
+	console.log("cx ok");
+};
+ws.onmessage= (ev) => {
+	console.log("M",ev.data);
+	d= JSON.parse(ev.data)
+	ws.send(JSON.stringify({t:'res', id: d.id, data: saludo+' '+new Date()+''}));
+}
+// }
+
 console.log("social_is_p2p loaded")
