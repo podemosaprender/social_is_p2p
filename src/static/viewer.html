@@ -1,13 +1,18 @@
 <!doctype html>
 <html>
 	<head>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine-ie11.min.js" integrity="sha512-Atu8sttM7mNNMon28+GHxLdz4Xo2APm1WVHwiLW9gW4bmHpHc/E2IbXrj98SmefTmbqbUTOztKl5PDPiu0LD/A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 		<script src="https://cdn.jsdelivr.net/npm/webtorrent@latest/webtorrent.min.js"></script>
 		<!--A: Include the latest version of WebTorrent -->
+		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 		<script src="./social_is_p2p.js"></script>
 	</head>
 	<body>
 		<h1>social_is_p2p Viewer</h1>
+
+		<div x-data="appui">
+			<textarea x-model="msg" rows="5" cols="80"></textarea><br>
+			<button @click="post">Post</button>
+		</div>
 
 		<div> 
 			<button id="seedBtn">Seed</button> 
@@ -35,6 +40,7 @@
 				document.querySelector('.log').appendChild(p)
 			}
 
+			if (false) {	
 			let ViewerUrl= location.href.replace(/[?#].*/,'');
 			let QRGenUrl= ViewerUrl.replace(/[^\/]+\/?$/,'')+'/qr.html';
 			let seedIndexFromUrl= decodeURIComponent(location.hash.slice(1)); //U: append magnet url as link href
@@ -109,7 +115,11 @@
 					})
 				})
 			}
+			}
 
 		</script>
+
+
+
 	</body>
 </html>

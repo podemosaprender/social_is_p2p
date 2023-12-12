@@ -36,7 +36,7 @@ function torrent_start() {
 		window.log && log('ERROR: torrent' + err.message) //TODO:custom handler
 	})
 }
-torrent_start();
+window.WebTorrent && torrent_start();
 
 function torrent_seed_text(title, text) {
 	let content= [ new Blob([ text ], {type: 'text/plain'}) ]
@@ -65,5 +65,32 @@ ws.onmessage= (ev) => {
 	ws.send(JSON.stringify({t:'res', id: d.id, data: saludo+' '+new Date()+''}));
 }
 // }
+
+//============================================================
+//S: alpine {
+//SEE: https://alpinejs.dev/globals/alpine-data
+let AppUI= {
+	msg: '',
+	async post() { 
+		console.log("POST", this.msg);
+		let post_torrent= await publish_text("mi post", this.msg);
+		let si= seedIndex_add("mi post", post_torrent.magnetURI);
+		let si_torrent= await publish_text("seedIndex", JSON.stringify(si, null,2));
+		let pub_res= await fetch('//'+host+'/seedindex/mau', {
+			method: 'PUT', headers: {'content-type': 'application/json'}, 
+			body: JSON.stringify({magnet: si_torrent.magnetURI}),
+		}).then(res => res.text());
+		console.log("PUB RES", pub_res);
+	},
+}
+
+function init_alpine() {
+	console.log("init_alpine 0");
+	try { Alpine.data('appui', () => (AppUI)) } catch (ex) { console.error("init_alpine ERROR", ex) }
+	console.log("init_alpine OK");
+}
+
+document.addEventListener('alpine:init', init_alpine);
+//S: alpine }
 
 console.log("social_is_p2p loaded")
